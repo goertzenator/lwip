@@ -1,0 +1,21 @@
+;-------------------------------------------------------------------------------------
+;   Keil scatter loading file
+;-------------------------------------------------------------------------------------
+
+; Load region is in internal IRAM, 64KBytes
+ISRAM 0x10000000 0x10000 {
+  ; All code, RO data, and non-DMA related RW/ZI data is in internal IRAM
+  ER_RO 0x10000000 0x10000 {
+    startup_ea1788.o (RESET, +FIRST)
+    *.o (+RO)
+    *.o (+RW)
+    *.o (+ZI)
+  }
+
+  ; DMA buffers need to be located in peripheral RAM, but not pbufs
+  PIRAM 0x20000000 0x8000 {
+    lpc17_emac.o (+RW, +ZI)
+	mem.o (+RW, +ZI)
+	memp.o (+RW, +ZI)
+  }
+}

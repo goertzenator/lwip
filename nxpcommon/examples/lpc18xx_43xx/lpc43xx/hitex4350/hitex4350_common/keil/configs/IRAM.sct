@@ -1,0 +1,20 @@
+;-------------------------------------------------------------------------------------
+;   Keil scatter loading file
+;-------------------------------------------------------------------------------------
+
+; Load region is in IRAM
+FLASH 0x10000000 0x20000 {
+  ; All code and RO data in IRAM
+  ER_RO 0x10000000 0x20000 {
+    startup_hitex4350_m4.o (RESET, +FIRST)
+    *.o (+RO)
+    *.o (+RW)
+    *.o (+ZI)
+	memp.o (+RW, +ZI)
+  }
+
+  ; DMA buffers need to be located in peripheral RAM, but not pbufs
+  PIRAM 0x10080000 0x00012000 {
+	mem.o (+RW, +ZI)
+  }
+}
